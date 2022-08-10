@@ -57,15 +57,7 @@ export const useTimetableStore = defineStore("timetableStore", {
     decodeTimetable() {
       const url = new URL(window.location.href);
       const timetable = url.searchParams.get("t") ?? "Template";
-
-      const timetables = {
-        OF10S2:
-          "T0YxMFMyJDQ1LDQ1LDQ1LDIwLDQ1LDQ1LDQ1LDQ1LDQ1LDQ1LDQ1JEVuZ2xpc2NoLElULVN5c3RlbWUsSVQtU3lzdGVtZSxQYXVzZSxJVC1UaGVvcmllLElULVRoZW9yaWUsTWl0dGFnc3BhdXNlLEFQLEFQLFBvbGl0aWssRXRoaWsvUmVsaTs7O0lULVN5c3RlbWUsSVQtU3lzdGVtZSxCd1AsUGF1c2UsQndQLElULVRoZW9yaWUsSVQtVGhlb3JpZTskMDAwMSQ3OjUwJFBhdXNlOjYwLE1pdHRhZ3NwYXVzZTo2MCxFbmdsaXNjaDowOkZyLiBLbGluZ3Nwb3IsSVQtU3lzdGVtZToxODA6SHIuIEVsdGVyLEFQOjEzMDpGci4gSGlwcGVsaSxQb2xpdGlrOjIwMDpIci4gQmVyYmVyaWNoLEV0aGlrL1JlbGk6MzAwOkZyLiBCZWNrbWFubitGci4gSG9mZm1hbm4sQndQOjI0MDpIci4gR2VoZWViIChLTCksSVQtVGhlb3JpZToyNjA6SHIuIEdlaGVlYiAoS0wpK0hyLiBaaW1tZXJtYW5u",
-        Template:
-          "VGVtcGxhdGUkNDUsNDUsNDUsMjAsNDUsNDUsNDUsNDUsNDUsNDUsNDUkLCwsLCwsLCwsLFQ7Ozs7JDAwMDEkMDg6MDAk",
-      };
-
-      const encoded = window.atob(timetables[timetable] ?? timetable);
+      const encoded = window.atob(import.meta.env["VITE_T_" + timetable] ?? timetable);
 
       const regex =
         /([A-Z0-9]+)\$([0-9,]+)\$([A-Z0-9,-\_]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9:,\. -\_]+))?/i;
