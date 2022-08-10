@@ -158,9 +158,9 @@ export const useTimetableStore = defineStore("timetableStore", {
       // Check for minimum Duration
       let hasMinimumDuration = true;
       this.timeTemplate = this.timeTemplate.map((duration) => {
-        if (duration < 20) {
+        if (duration < 15) {
           hasMinimumDuration = false;
-          return 20;
+          return 15;
         }
         return duration;
       });
@@ -169,7 +169,7 @@ export const useTimetableStore = defineStore("timetableStore", {
         this.errors.push({
           critical: false,
           message:
-            "Minimum Duration is 20 minutes. Affected Lessons have been corrected.",
+            "Minimum Duration is 15 minutes. Affected Lessons have been corrected.",
         });
       }
 
