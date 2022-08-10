@@ -22,6 +22,8 @@ import { useTimetableStore } from "./stores/timetableInfo.js";
 
 export default {
   setup() {
+    console.log(import.meta.env)
+
     const timetable = useTimetableStore();
     const { errors, isReady, isEditing } = storeToRefs(timetable);
 
