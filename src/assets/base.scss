@@ -55,21 +55,19 @@
   --default-opacity: 0.2;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --color-background: var(--custom-grey);
-    --color-background-soft: var(--custom-grey-soft);
-    --color-background-mute: var(--vt-c-white-mute);
+[data-theme="light"] {
+  --color-background: var(--custom-grey);
+  --color-background-soft: var(--custom-grey-soft);
+  --color-background-mute: var(--vt-c-white-mute);
 
-    --color-border: var(--vt-c-divider-light-2);
-    --color-border-hover: var(--vt-c-divider-light-1);
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
 
-    --color-heading: var(--vt-c-text-light-1);
-    --color-text: var(--custom-blue-mute);
-    --color-notification: var(--custom-red);
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--custom-blue-mute);
+  --color-notification: var(--custom-red);
 
-    --default-opacity: 0.5;
-  }
+  --default-opacity: 0.5;
 }
 
 *,

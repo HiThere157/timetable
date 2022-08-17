@@ -6,13 +6,8 @@
       <span v-if="!isEditing">{{ title }}</span>
       <input v-else v-model="title" />
 
-      <button class="icon" @click="toggleEdit">
-        <EditIcon v-if="!isEditing" />
-        <CloseIcon v-else />
-      </button>
-      <button v-if="isEditing" class="icon" @click="saveToUrl">
-        <SaveIcon />
-      </button>
+      <EditAction />
+      <ThemeAction />
     </div>
 
     <span>{{ time }}</span>
@@ -23,9 +18,8 @@
 
 <script>
 import URLInstruction from "./URLInstruction.vue";
-import EditIcon from "../icons/Edit.vue";
-import CloseIcon from "../icons/Close.vue";
-import SaveIcon from "../icons/Save.vue";
+import EditAction from "./HeaderActions/Edit.vue";
+import ThemeAction from "./HeaderActions/Theme.vue";
 
 import { storeToRefs } from "pinia";
 import { useTimetableStore } from "../stores/timetableInfo.js";
@@ -55,24 +49,10 @@ export default {
       return this.errors.some((error) => error.critical);
     },
   },
-  methods: {
-    toggleEdit() {
-      this.isEditing = !this.isEditing;
-    },
-    saveToUrl() {
-      const timetable = useTimetableStore();
-
-      timetable.encodeTimetable();
-
-      this.isEditing = false;
-      this.instructionOpen = true;
-    },
-  },
   components: {
     URLInstruction,
-    EditIcon,
-    CloseIcon,
-    SaveIcon,
+    EditAction,
+    ThemeAction,
   },
 };
 </script>
