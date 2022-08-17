@@ -82,7 +82,8 @@ td {
   text-align: left;
   background-color: hsla(var(--color), 100%, 40%, var(--default-opacity));
 
-  &:hover, ::selection {
+  &:hover,
+  ::selection {
     background-color: hsla(
       var(--color),
       100%,

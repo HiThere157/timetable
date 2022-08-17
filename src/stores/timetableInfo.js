@@ -57,7 +57,9 @@ export const useTimetableStore = defineStore("timetableStore", {
     decodeTimetable() {
       const url = new URL(window.location.href);
       const timetable = url.searchParams.get("t") ?? "Template";
-      const encoded = window.atob(import.meta.env["VITE_T_" + timetable] ?? timetable);
+      const encoded = window.atob(
+        import.meta.env["VITE_T_" + timetable] ?? timetable,
+      );
 
       const regex =
         /([A-Z0-9]+)\$([0-9,]+)\$([A-Z0-9,-\_]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9:,\. -\_]+))?/i;

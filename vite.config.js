@@ -6,10 +6,14 @@ import vue from "@vitejs/plugin-vue";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  base: "./",
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  base: "./",
+  build: {
+    outDir: "../../Javascript/Projects/15timetable2",
+    emptyOutDir: true,
+  },
 });
