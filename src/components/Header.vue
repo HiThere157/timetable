@@ -11,13 +11,10 @@
     </div>
 
     <span>{{ time }}</span>
-
-    <URLInstruction v-if="instructionOpen" @close="instructionOpen = false" />
   </div>
 </template>
 
 <script>
-import URLInstruction from "./URLInstruction.vue";
 import EditAction from "./HeaderActions/Edit.vue";
 import ThemeAction from "./HeaderActions/Theme.vue";
 
@@ -28,11 +25,6 @@ export default {
   setup() {
     const { errors, isEditing, title } = storeToRefs(useTimetableStore());
     return { errors, isEditing, title };
-  },
-  data() {
-    return {
-      instructionOpen: false,
-    };
   },
   props: {
     time: {
@@ -50,7 +42,6 @@ export default {
     },
   },
   components: {
-    URLInstruction,
     EditAction,
     ThemeAction,
   },
@@ -74,5 +65,9 @@ export default {
   display: flex;
   align-items: center;
   column-gap: 0.5rem;
+
+  & > *:first-child {
+    margin-right: 1rem;
+  }
 }
 </style>

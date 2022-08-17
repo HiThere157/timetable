@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: absolute">
     <div class="background" @click="$emit('close')"></div>
     <div class="container">
       <span
