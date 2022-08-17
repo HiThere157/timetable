@@ -4,7 +4,6 @@
     class="ionicon"
     viewBox="0 0 512 1024"
   >
-    <title>Arrow</title>
     <path
       d="M20 350 A400 400 0 0 0 405 20"
       stroke="currentColor"
