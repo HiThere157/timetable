@@ -1,5 +1,13 @@
 export default class Time {
   constructor(timeString) {
+    if (!timeString) {
+      const date = new Date();
+      this.timeString =
+        date.getHours() + ":" + date.getMinutes().toString().padStart(2, "0");
+
+      return;
+    }
+
     this.timeString = timeString;
   }
 

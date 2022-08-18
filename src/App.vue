@@ -1,11 +1,11 @@
 <template>
   <div class="appContainer">
-    <Header :time="timeObject" :date="currentDate" />
+    <Header :time="currentTime" :date="currentDate" />
 
     <Notification v-if="errors.length !== 0" />
 
     <template v-if="!hasCriticalErrors">
-      <Timetable :time="timeObject" :day="currentDay" />
+      <Timetable :time="currentTime" :day="currentDay" />
       <AdditionalInfo v-if="isEditing" />
     </template>
     <CreateNew v-else />
@@ -37,26 +37,23 @@ export default {
     return {
       interval: null,
 
-      currentTimeString: "",
+      currentTime: new Time(),
       currentDay: 0,
       currentDate: "",
     };
   },
   mounted() {
     this.updateTime();
-    this.isReady = true;
     this.interval = setInterval(() => {
       this.updateTime();
     }, 1000);
+    this.isReady = true;
   },
   destroyed() {
-    this.isReady = flase;
+    this.isReady = false;
     clearInterval(this.interval);
   },
   computed: {
-    timeObject() {
-      return new Time(this.currentTimeString);
-    },
     hasCriticalErrors() {
       return this.errors.some((error) => error.critical);
     },
@@ -76,10 +73,9 @@ export default {
       }
 
       if (timeOverride) {
-        this.currentTimeString = timeOverride;
+        this.currentTime = new Time(timeOverride);
       } else {
-        this.currentTimeString =
-          date.getHours() + ":" + date.getMinutes().toString().padStart(2, "0");
+        this.currentTime = new Time();
       }
 
       this.currentDate = date.toLocaleDateString("de-DE");
