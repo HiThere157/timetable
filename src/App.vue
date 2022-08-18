@@ -27,11 +27,11 @@ import { useTimetableStore } from "./stores/timetableInfo.js";
 export default {
   setup() {
     const timetable = useTimetableStore();
-    const { errors, isReady, isEditing } = storeToRefs(timetable);
+    const { errors, isEditing } = storeToRefs(timetable);
 
     timetable.tryDecodeTimetable();
 
-    return { errors, isReady, isEditing };
+    return { errors, isEditing };
   },
   data() {
     return {
@@ -47,10 +47,8 @@ export default {
     this.interval = setInterval(() => {
       this.updateTime();
     }, 1000);
-    this.isReady = true;
   },
   destroyed() {
-    this.isReady = false;
     clearInterval(this.interval);
   },
   computed: {

@@ -8,10 +8,8 @@ import { useTimetableStore } from "../stores/timetableInfo.js";
 
 export default {
   setup() {
-    const { isReady, startTime, timeTemplate } = storeToRefs(
-      useTimetableStore(),
-    );
-    return { isReady, startTime, timeTemplate };
+    const { startTime, timeTemplate } = storeToRefs(useTimetableStore());
+    return { startTime, timeTemplate };
   },
   props: {
     time: {
@@ -36,23 +34,21 @@ export default {
     getRowElements() {
       return document
         .querySelector(".timetable-js")
-        .querySelectorAll("tr:not(.headerRow)");
+        ?.querySelectorAll("tr:not(.headerRow)");
+    },
+    getTableDimentions() {
+      const rowElements = this.getRowElements();
+      if (!rowElements) return;
+
+      const top = this.getAbsoluteY(rowElements[0], false);
+      const height =
+        this.getAbsoluteY(rowElements[rowElements.length - 1], true) - top;
+
+      return { top, height };
     },
   },
   computed: {
-    tableTop() {
-      return this.getAbsoluteY(this.getRowElements()[0], false);
-    },
-    tableHeight() {
-      const rowElements = this.getRowElements();
-      return (
-        this.getAbsoluteY(rowElements[rowElements.length - 1], true) -
-        this.tableTop
-      );
-    },
     position() {
-      if (!this.isReady) return 0;
-
       const minutesNow = this.time.getMinutes();
       const minutesMin = this.startTime.getMinutes();
       const minutesMax =
@@ -63,9 +59,12 @@ export default {
         percentDone = (minutesMax - minutesMin) / (minutesNow - minutesMin);
       }
 
-      return percentDone === -1
-        ? -100
-        : this.tableHeight / percentDone + this.tableTop;
+      const tableDimentions = this.getTableDimentions();
+      if (!tableDimentions || percentDone === -1) {
+        return -100;
+      }
+
+      return tableDimentions.height / percentDone + tableDimentions.top;
     },
   },
 };

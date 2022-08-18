@@ -6,7 +6,6 @@ export const useTimetableStore = defineStore("timetableStore", {
   state() {
     return {
       errors: [],
-      isReady: false,
       isEditing: false,
 
       title: "",
