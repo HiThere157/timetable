@@ -47,10 +47,10 @@ import { useTimetableStore } from "../stores/timetableInfo.js";
 
 export default {
   setup() {
-    const { isEditing, tableContent, timeTemplate } = storeToRefs(
+    const { isEditing, tableContent, timeTemplate, rowLabels } = storeToRefs(
       useTimetableStore(),
     );
-    return { isEditing, tableContent, timeTemplate };
+    return { isEditing, tableContent, timeTemplate, rowLabels };
   },
   props: {
     time: {
@@ -76,6 +76,7 @@ export default {
       if (this.tableContent.length > 1) {
         this.tableContent.pop();
         this.timeTemplate.pop();
+        this.rowLabels = this.rowLabels.slice(0, this.tableContent.length);
       }
     },
   },

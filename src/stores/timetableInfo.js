@@ -99,7 +99,7 @@ export const useTimetableStore = defineStore("timetableStore", {
       // Calculate lesson start and end times using duration and end time of previous lesson
       this.startTime = new Time(encodedComponents[4]);
     },
-    encodeTimetable() {
+    filterTimetable() {
       const errorObject = {};
       // Filter Lesson Names
       this.tableContent = this.tableContent.map((day) => {
@@ -140,13 +140,22 @@ export const useTimetableStore = defineStore("timetableStore", {
         if (this.tableContent[i].join("") === "") {
           this.tableContent.pop();
           this.timeTemplate.pop();
+          this.rowLabels = this.rowLabels.slice(0, this.tableContent.length);
         } else {
           break;
         }
       }
       if (this.tableContent.length === 0) {
-        this.tableContent.push(["Placeholder", "", "", "", ""]);
-        this.timeTemplate.push(45);
+        this.tableContent = [["Placeholder", "", "", "", ""]];
+        this.timeTemplate = [45];
+        this.rowLabels = [false];
+      }
+
+      // Remove possible undefined values in rowLabels
+      for (let i = 0; i < this.rowLabels.length; i++) {
+        if (this.rowLabels[i] === undefined) {
+          this.rowLabels[i] = false;
+        }
       }
 
       // Check for minimum Duration
@@ -166,7 +175,8 @@ export const useTimetableStore = defineStore("timetableStore", {
             "Minimum Duration is 15 minutes. Affected Lessons have been corrected.",
         });
       }
-
+    },
+    encodeTimetable() {
       const encoded = [
         this.title,
 

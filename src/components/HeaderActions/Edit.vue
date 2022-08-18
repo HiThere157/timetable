@@ -32,12 +32,19 @@ export default {
   methods: {
     toggleEdit() {
       this.isEditing = !this.isEditing;
+
+      // When exiting edit mode, filter for reserved Characters & empty rows
+      if (!this.isEditing) {
+        const timetable = useTimetableStore();
+        timetable.filterTimetable();
+      }
     },
     saveToUrl() {
+      this.toggleEdit();
+
       const timetable = useTimetableStore();
       timetable.encodeTimetable();
 
-      this.isEditing = false;
       this.instructionOpen = true;
     },
   },
