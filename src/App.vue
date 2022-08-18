@@ -3,9 +3,12 @@
     <Header :time="timeObject" :date="currentDate" />
 
     <Notification v-if="errors.length !== 0" />
-    <Timetable v-if="!hasCriticalErrors" :time="timeObject" :day="currentDay" />
 
-    <AdditionalInfo v-if="isEditing" />
+    <template v-if="!hasCriticalErrors">
+      <Timetable :time="timeObject" :day="currentDay" />
+      <AdditionalInfo v-if="isEditing" />
+    </template>
+    <CreateNew v-else />
   </div>
 </template>
 
@@ -16,6 +19,7 @@ import Header from "./components/Header.vue";
 import Timetable from "./components/Timetable.vue";
 import AdditionalInfo from "./components/AdditionalInfo.vue";
 import Notification from "./components/Notification.vue";
+import CreateNew from "./components/CreateNew.vue";
 
 import { storeToRefs } from "pinia";
 import { useTimetableStore } from "./stores/timetableInfo.js";
@@ -86,6 +90,7 @@ export default {
     Timetable,
     AdditionalInfo,
     Notification,
+    CreateNew,
   },
 };
 </script>

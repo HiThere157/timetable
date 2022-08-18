@@ -18,16 +18,20 @@
       <Row v-for="(n, index) in tableContent.length" :rowIndex="index" />
     </table>
 
-    <div v-if="isEditing" class="changeLessonCountContainer">
-      <span>Add or Remove Rows:</span>
+    <template v-if="isEditing">
+      <div class="changeLessonCountContainer">
+        <span>Add or Remove Rows:</span>
 
-      <button class="icon" @click="addRow"><AddIcon /></button>
-      <button class="icon" @click="removeRow" :disabled="!canRemove">
-        <RemoveIcon />
-      </button>
-    </div>
+        <button class="icon" @click="addRow"><AddIcon /></button>
+        <button class="icon" @click="removeRow" :disabled="!canRemove">
+          <RemoveIcon />
+        </button>
+      </div>
 
-    <template v-if="!isEditing">
+      <CreateNew />
+    </template>
+
+    <template v-else>
       <Bar :time="time" />
       <Footer :time="time" :day="day" />
     </template>
@@ -39,6 +43,7 @@ import Row from "./Row.vue";
 import Bar from "./Bar.vue";
 import Info from "./Info.vue";
 import Footer from "./Footer.vue";
+import CreateNew from "./CreateNew.vue";
 import AddIcon from "../icons/Add.vue";
 import RemoveIcon from "../icons/Remove.vue";
 
@@ -85,6 +90,7 @@ export default {
     Bar,
     Info,
     Footer,
+    CreateNew,
     AddIcon,
     RemoveIcon,
   },
@@ -128,7 +134,7 @@ export default {
 
 .changeLessonCountContainer {
   display: flex;
-  margin-top: 1.5rem;
+  margin: 1.5rem 0;
   justify-content: space-between;
   align-items: center;
   column-gap: 0.5rem;

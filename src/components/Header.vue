@@ -2,11 +2,14 @@
   <div class="header">
     <span>{{ date }}</span>
 
-    <div v-if="!hasCriticalErrors" class="actionContainer">
-      <span v-if="!isEditing">{{ title }}</span>
-      <input v-else v-model="title" />
+    <div class="actionContainer">
+      <template v-if="!hasCriticalErrors">
+        <span v-if="!isEditing">{{ title }}</span>
+        <input v-else v-model="title" />
 
-      <EditAction />
+        <EditAction />
+      </template>
+
       <ThemeAction />
     </div>
 
