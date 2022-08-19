@@ -1,11 +1,10 @@
 <template>
   <URLInstruction v-if="instructionOpen" @close="instructionOpen = false" />
 
-  <button class="icon" @click="toggleEdit">
-    <EditIcon v-if="!isEditing" />
-    <CloseIcon v-else />
+  <button v-if="!isEditing" class="icon" @click="toggleEdit">
+    <EditIcon />
   </button>
-  <button v-if="isEditing" class="icon" @click="saveToUrl">
+  <button v-else class="icon" @click="toggleEdit">
     <SaveIcon />
   </button>
 </template>
@@ -13,7 +12,6 @@
 <script>
 import URLInstruction from "../URLInstruction.vue";
 import EditIcon from "../../icons/Edit.vue";
-import CloseIcon from "../../icons/Close.vue";
 import SaveIcon from "../../icons/Save.vue";
 
 import { storeToRefs } from "pinia";
@@ -37,21 +35,15 @@ export default {
       if (!this.isEditing) {
         const timetable = useTimetableStore();
         timetable.filterTimetable();
+        timetable.encodeTimetable();
+
+        this.instructionOpen = true;
       }
-    },
-    saveToUrl() {
-      this.toggleEdit();
-
-      const timetable = useTimetableStore();
-      timetable.encodeTimetable();
-
-      this.instructionOpen = true;
     },
   },
   components: {
     URLInstruction,
     EditIcon,
-    CloseIcon,
     SaveIcon,
   },
 };
