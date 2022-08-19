@@ -21,8 +21,8 @@ import { useTimetableStore } from "../../stores/timetableInfo.js";
 
 export default {
   setup() {
-    const { isEditing } = storeToRefs(useTimetableStore());
-    return { isEditing };
+    const { isEditing, alerts } = storeToRefs(useTimetableStore());
+    return { isEditing, alerts };
   },
   data() {
     return {
@@ -34,18 +34,28 @@ export default {
       this.isEditing = !this.isEditing;
 
       // When exiting edit mode, filter for reserved Characters & empty rows
-      if (!this.isEditing) {
-        const timetable = useTimetableStore();
-        timetable.filterTimetable();
-      }
+      if (this.isEditing) return;
+      const timetable = useTimetableStore();
+      timetable.filterTimetable();
+
+      this.alerts.push({
+        id: "unsavedChanges",
+        critical: false,
+        message:
+          "Unsaved changes will be lost after reloading the page. To save your changes, click the save button when editing.",
+      });
     },
     saveToUrl() {
-      this.toggleEdit();
-
       const timetable = useTimetableStore();
+      timetable.filterTimetable();
       timetable.encodeTimetable();
 
+      this.isEditing = false;
       this.instructionOpen = true;
+
+      this.alerts = this.alerts.filter(
+        (alert) => alert.id !== "unsavedChanges",
+      );
     },
   },
   components: {

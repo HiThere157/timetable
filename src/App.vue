@@ -2,9 +2,9 @@
   <div class="appContainer">
     <Header :time="currentTime" :date="currentDate" />
 
-    <Notification v-if="errors.length !== 0" />
+    <Notification v-if="alerts.length !== 0" />
 
-    <template v-if="!hasCriticalErrors">
+    <template v-if="!hasCriticalAlerts">
       <Timetable :time="currentTime" :day="currentDay" />
       <AdditionalInfo v-if="isEditing" />
     </template>
@@ -27,11 +27,11 @@ import { useTimetableStore } from "./stores/timetableInfo.js";
 export default {
   setup() {
     const timetable = useTimetableStore();
-    const { errors, isEditing } = storeToRefs(timetable);
+    const { alerts, isEditing } = storeToRefs(timetable);
 
     timetable.tryDecodeTimetable();
 
-    return { errors, isEditing };
+    return { alerts, isEditing };
   },
   data() {
     return {
@@ -52,8 +52,8 @@ export default {
     clearInterval(this.interval);
   },
   computed: {
-    hasCriticalErrors() {
-      return this.errors.some((error) => error.critical);
+    hasCriticalAlerts() {
+      return this.alerts.some((alert) => alert.critical);
     },
   },
   methods: {

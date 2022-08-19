@@ -5,7 +5,7 @@ import { defineStore } from "pinia";
 export const useTimetableStore = defineStore("timetableStore", {
   state() {
     return {
-      errors: [],
+      alerts: [],
       isEditing: false,
 
       title: "",
@@ -46,7 +46,8 @@ export const useTimetableStore = defineStore("timetableStore", {
       try {
         this.decodeTimetable();
       } catch (error) {
-        this.errors.push({
+        this.alerts.push({
+          id: "decodeError",
           critical: true,
           message: "Invalid Timetable Format",
         });
@@ -128,7 +129,8 @@ export const useTimetableStore = defineStore("timetableStore", {
       );
 
       if (errorObject.hasReserved) {
-        this.errors.push({
+        this.alerts.push({
+          id: "reservedCharacters",
           critical: false,
           message: "Some reserved characters (,;$) have been removed.",
         });
@@ -168,7 +170,8 @@ export const useTimetableStore = defineStore("timetableStore", {
       });
 
       if (!hasMinimumDuration) {
-        this.errors.push({
+        this.alerts.push({
+          id: "minimumDuration",
           critical: false,
           message:
             "Minimum Duration is 15 minutes. Affected Lessons have been corrected.",

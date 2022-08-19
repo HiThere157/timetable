@@ -3,7 +3,7 @@
     <span>{{ date }}</span>
 
     <div class="actionContainer">
-      <template v-if="!hasCriticalErrors">
+      <template v-if="!hasCriticalAlerts">
         <span v-if="!isEditing">{{ title }}</span>
         <input v-else v-model="title" />
 
@@ -26,8 +26,8 @@ import { useTimetableStore } from "../stores/timetableInfo.js";
 
 export default {
   setup() {
-    const { errors, isEditing, title } = storeToRefs(useTimetableStore());
-    return { errors, isEditing, title };
+    const { alerts, isEditing, title } = storeToRefs(useTimetableStore());
+    return { alerts, isEditing, title };
   },
   props: {
     time: {
@@ -40,8 +40,8 @@ export default {
     },
   },
   computed: {
-    hasCriticalErrors() {
-      return this.errors.some((error) => error.critical);
+    hasCriticalAlerts() {
+      return this.alerts.some((alert) => alert.critical);
     },
   },
   components: {

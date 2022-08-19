@@ -1,11 +1,15 @@
 <template>
   <div class="container">
-    <div v-for="(error, index) in errors" class="notification">
-      <InfoIcon />
+    <div v-for="alert in noDuplicates" class="notification">
+      <InfoIcon class="infoIcon" />
 
-      <span class="message">{{ error.message }}</span>
+      <span class="message">{{ alert.message }}</span>
 
-      <button v-if="!error.critical" class="icon" @click="removeError(index)">
+      <button
+        v-if="!alert.critical"
+        class="icon"
+        @click="removeError(alert.id)"
+      >
         <CloseIcon />
       </button>
     </div>
@@ -21,12 +25,20 @@ import { useTimetableStore } from "../stores/timetableInfo.js";
 
 export default {
   setup() {
-    const { errors } = storeToRefs(useTimetableStore());
-    return { errors };
+    const { alerts } = storeToRefs(useTimetableStore());
+    return { alerts };
+  },
+  computed: {
+    noDuplicates() {
+      return this.alerts.filter(
+        (alert, index, self) =>
+          self.findIndex((alert_) => alert_.id === alert.id) === index,
+      );
+    },
   },
   methods: {
-    removeError(index) {
-      this.errors.splice(index, 1);
+    removeError(id) {
+      this.alerts = this.alerts.filter((alert) => alert.id !== id);
     },
   },
   components: {
@@ -49,18 +61,21 @@ button {
 .notification {
   display: flex;
   width: 100%;
-  height: 2.75rem;
   margin-top: 1rem;
+  padding: 0.25rem 0;
   justify-content: left;
   align-items: center;
   font-size: x-large;
   border-radius: 0.2rem;
   background-color: var(--color-background-soft);
-  color: var(--color-notification);
 
   & > *:not(.message) {
     margin: 0 0.75rem;
   }
+}
+
+.infoIcon {
+  color: var(--color-notification);
 }
 
 .message {
