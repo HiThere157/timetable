@@ -6,7 +6,7 @@
 export default {
   methods: {
     redirectToTemplate() {
-      window.location.href = window.location.origin + window.location.pathname;
+      window.location.href = window.location.origin + window.location.pathname + "?t=Template";
     },
   },
 };
