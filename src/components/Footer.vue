@@ -1,11 +1,16 @@
 <template>
-  <div v-if="currentLesson.lesson" class="footer">
+  <div
+    v-if="currentLesson.lesson"
+    class="footer"
+    :style="{
+      '--color': color,
+    }"
+  >
     <div
+      class="footerBar"
       :style="{
         width: lessonInfo.progress,
-        '--color': color,
       }"
-      class="footerBar"
     ></div>
     <span>{{ lessonInfo.lessonStartTime }}</span>
     <span>{{
@@ -139,6 +144,15 @@ export default {
     font-size: xx-large;
     margin: 0 0.5em;
     z-index: 350;
+  }
+
+  ::selection {
+    background-color: hsla(
+      var(--color),
+      100%,
+      40%,
+      calc(var(--default-opacity) * 3)
+    );
   }
 }
 
