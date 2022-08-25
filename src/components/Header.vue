@@ -9,8 +9,6 @@
 
         <EditAction />
       </template>
-
-      <ThemeAction />
     </div>
 
     <span>{{ time }}</span>
@@ -19,7 +17,6 @@
 
 <script>
 import EditAction from "./HeaderActions/Edit.vue";
-import ThemeAction from "./HeaderActions/Theme.vue";
 
 import { storeToRefs } from "pinia";
 import { useTimetableStore } from "../stores/timetableInfo.js";
@@ -46,7 +43,6 @@ export default {
   },
   components: {
     EditAction,
-    ThemeAction,
   },
 };
 </script>
