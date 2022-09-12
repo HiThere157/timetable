@@ -19,7 +19,10 @@ export const useTimetableStore = defineStore("timetableStore", {
   },
   actions: {
     transpose(matrix) {
-      return Object.keys(matrix[0]).map((c) => matrix.map((r) => r[c]));
+      const matrixLengths = matrix.map((r) => r.length);
+      return Object.keys(
+        matrix[matrixLengths.indexOf(Math.max(...matrixLengths))],
+      ).map((c) => matrix.map((r) => r[c]));
     },
     trimArray(array) {
       for (let i = array.length - 1; i >= 0; i--) {
