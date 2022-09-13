@@ -2,6 +2,10 @@ import Time from "../utils/Time.js";
 
 import { defineStore } from "pinia";
 
+const delimiter1 = "$";
+const delimiter2 = "§";
+const delimiter3 = "%";
+
 export const useTimetableStore = defineStore("timetableStore", {
   state() {
     return {
@@ -37,7 +41,7 @@ export const useTimetableStore = defineStore("timetableStore", {
     filterReserved(string, errorObject = {}) {
       if (!string) return "";
 
-      const newString = string.replace(/[$§;]/g, "");
+      const newString = string.replace(/[$§%]/g, "");
 
       if (newString !== string) {
         errorObject.hasReserved = true;
@@ -66,24 +70,26 @@ export const useTimetableStore = defineStore("timetableStore", {
       );
 
       const regex =
-        /([A-Z0-9:,\. -\_!]+)\$([0-9§]+)\$([A-Z0-9:,§\. -\_!]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9:,§\. -\_!]+))?/i;
+        /([A-Z0-9:,\. -\_!]+)\$([0-9§]+)\$([A-Z0-9:%,§\. -\_!]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9%,§\. -\_!]+))?/i;
       if (!regex.test(encoded)) {
         throw new Error("Invalid timetable");
       }
 
-      const encodedComponents = encoded.split("$");
+      const encodedComponents = encoded.split(delimiter1);
 
       // Timetable Title
       this.title = encodedComponents[0];
 
       // Lesson Durations
       this.timeTemplate = encodedComponents[1]
-        .split("§")
+        .split(delimiter2)
         .map((time) => parseInt(time));
 
       // Table Content
       this.tableContent = this.transpose(
-        encodedComponents[2].split(";").map((day) => day.split("§")),
+        encodedComponents[2]
+          .split(delimiter3)
+          .map((day) => day.split(delimiter2)),
       );
 
       // Decoded Lesson Labels
@@ -92,8 +98,8 @@ export const useTimetableStore = defineStore("timetableStore", {
       // Background Colors and Teacher Info
       if (encodedComponents[5]) {
         encodedComponents[5]
-          .split("§")
-          .map((param) => param.split(";"))
+          .split(delimiter2)
+          .map((param) => param.split(delimiter3))
           .forEach((info) => {
             this.colors[info[0]] = info[1];
             this.teachers[info[0]] = info[2];
@@ -136,7 +142,9 @@ export const useTimetableStore = defineStore("timetableStore", {
         this.alerts.push({
           id: "reservedCharacters",
           critical: false,
-          message: "Some reserved characters ($§;) have been removed.",
+          message: `Some reserved characters (${
+            delimiter1 + delimiter2 + delimiter3
+          }) have been removed.`,
         });
       }
 
@@ -186,11 +194,11 @@ export const useTimetableStore = defineStore("timetableStore", {
       const encoded = [
         this.title,
 
-        this.timeTemplate.join("§"),
+        this.timeTemplate.join(delimiter2),
 
         this.transpose(this.tableContent)
-          .map((day) => this.trimArray(day).join("§"))
-          .join(";"),
+          .map((day) => this.trimArray(day).join(delimiter2))
+          .join(delimiter3),
 
         this.rowLabels.map((s) => (s ? "1" : "0")).join(""),
 
@@ -199,11 +207,11 @@ export const useTimetableStore = defineStore("timetableStore", {
         Object.keys(this.colors)
           .map(
             (key) =>
-              `${key};${this.colors[key]}` +
-              (this.teachers[key] ? `;${this.teachers[key]}` : ""),
+              `${key}${delimiter3}${this.colors[key]}` +
+              (this.teachers[key] ? `${delimiter3}${this.teachers[key]}` : ""),
           )
-          .join("§"),
-      ].join("$");
+          .join(delimiter2),
+      ].join(delimiter1);
 
       window.history.pushState({}, "", `?t=${window.btoa(encoded)}`);
     },
