@@ -69,8 +69,7 @@ export const useTimetableStore = defineStore("timetableStore", {
         import.meta.env["VITE_T_" + timetable] ?? timetable,
       );
 
-      const regex =
-        /([A-Z0-9:,\. -\_!]+)\$([0-9§]+)\$([A-Z0-9:%,§\. -\_!]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9%,§\. -\_!]+))?/i;
+      const regex = /^(.+)\$([0-9§]+)\$(.+)\$([01]+)\$([0-9]+:[0-9]+)\$(.+|)$/i;
       if (!regex.test(encoded)) {
         throw new Error("Invalid timetable");
       }
