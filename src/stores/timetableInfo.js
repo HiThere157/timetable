@@ -37,7 +37,7 @@ export const useTimetableStore = defineStore("timetableStore", {
     filterReserved(string, errorObject = {}) {
       if (!string) return "";
 
-      const newString = string.replace(/[,;$]/g, "");
+      const newString = string.replace(/[$§;]/g, "");
 
       if (newString !== string) {
         errorObject.hasReserved = true;
@@ -52,7 +52,8 @@ export const useTimetableStore = defineStore("timetableStore", {
         this.alerts.push({
           id: "decodeError",
           critical: true,
-          message: "Invalid Timetable Format",
+          message:
+            "Invalid or Old Timetable Format. (I probably updated the decoder)",
         });
         console.error(error);
       }
@@ -65,7 +66,7 @@ export const useTimetableStore = defineStore("timetableStore", {
       );
 
       const regex =
-        /([A-Z0-9]+)\$([0-9,]+)\$([A-Z0-9,-\_]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9:,\. -\_]+))?/i;
+        /([A-Z0-9:,\. -\_!]+)\$([0-9§]+)\$([A-Z0-9:,§\. -\_!]+)\$([01]+)\$([0-9]+:[0-9]+)(\$([A-Z0-9:,§\. -\_!]+))?/i;
       if (!regex.test(encoded)) {
         throw new Error("Invalid timetable");
       }
@@ -77,12 +78,12 @@ export const useTimetableStore = defineStore("timetableStore", {
 
       // Lesson Durations
       this.timeTemplate = encodedComponents[1]
-        .split(",")
+        .split("§")
         .map((time) => parseInt(time));
 
       // Table Content
       this.tableContent = this.transpose(
-        encodedComponents[2].split(";").map((day) => day.split(",")),
+        encodedComponents[2].split(";").map((day) => day.split("§")),
       );
 
       // Decoded Lesson Labels
@@ -91,8 +92,8 @@ export const useTimetableStore = defineStore("timetableStore", {
       // Background Colors and Teacher Info
       if (encodedComponents[5]) {
         encodedComponents[5]
-          .split(",")
-          .map((param) => param.split(":"))
+          .split("§")
+          .map((param) => param.split(";"))
           .forEach((info) => {
             this.colors[info[0]] = info[1];
             this.teachers[info[0]] = info[2];
@@ -135,7 +136,7 @@ export const useTimetableStore = defineStore("timetableStore", {
         this.alerts.push({
           id: "reservedCharacters",
           critical: false,
-          message: "Some reserved characters (,;$) have been removed.",
+          message: "Some reserved characters ($§;) have been removed.",
         });
       }
 
@@ -185,21 +186,23 @@ export const useTimetableStore = defineStore("timetableStore", {
       const encoded = [
         this.title,
 
-        this.timeTemplate.join(","),
+        this.timeTemplate.join("§"),
 
         this.transpose(this.tableContent)
-          .map((day) => this.trimArray(day).join(","))
+          .map((day) => this.trimArray(day).join("§"))
           .join(";"),
 
         this.rowLabels.map((s) => (s ? "1" : "0")).join(""),
 
         this.startTime.toString(),
 
-        Object.keys(this.colors).map(
-          (key) =>
-            `${key}:${this.colors[key]}` +
-            (this.teachers[key] ? `:${this.teachers[key]}` : ""),
-        ),
+        Object.keys(this.colors)
+          .map(
+            (key) =>
+              `${key};${this.colors[key]}` +
+              (this.teachers[key] ? `;${this.teachers[key]}` : ""),
+          )
+          .join("§"),
       ].join("$");
 
       window.history.pushState({}, "", `?t=${window.btoa(encoded)}`);

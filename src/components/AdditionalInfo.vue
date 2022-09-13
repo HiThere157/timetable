@@ -4,12 +4,12 @@
       <tr class="headerRow">
         <th>Lesson</th>
         <th>
-          <Info title="Teacher" text="Use '+' To seperate multiple Names" />
+          <Info title="Teacher" text="Use ',' To seperate multiple Names" />
         </th>
         <th>Color</th>
         <th>Action</th>
       </tr>
-      <tr v-for="(lesson, index) in Object.keys(colors)">
+      <tr v-for="lesson in Object.keys(colors)">
         <td>{{ lesson }}</td>
         <td>
           <input v-model="teachers[lesson]" type="text" />
@@ -66,6 +66,7 @@ export default {
     addLesson() {
       this.colors[this.addNewLesson] = "0";
       this.teachers[this.addNewLesson] = "";
+      this.addNewLesson = "";
     },
   },
   components: {

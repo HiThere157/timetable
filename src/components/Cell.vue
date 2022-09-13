@@ -51,7 +51,7 @@ export default {
       );
     },
     teacher() {
-      return this.teachers[this.name]?.replace(/\+/g, "\n");
+      return this.teachers[this.name]?.replace(/,/g, "\n");
     },
     color() {
       return this.colors[this.name] ?? 0;

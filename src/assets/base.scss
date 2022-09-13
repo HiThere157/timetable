@@ -105,6 +105,11 @@ input {
   color: inherit;
   font-size: inherit;
 
+  &[invalid="true"] {
+    border-color: var(--color-notification);
+    outline: var(--color-notification);
+  }
+
   &[type="range"] {
     -webkit-appearance: none;
     height: 0.75rem;

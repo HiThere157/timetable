@@ -29,12 +29,17 @@ export default {
 
 <style lang="scss" scoped>
 svg {
-  height: 1.25rem;
+  height: 1em;
   margin-left: 0.3rem;
 }
 
 .infoContainer {
   display: flex;
   align-items: center;
+
+  & div {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
