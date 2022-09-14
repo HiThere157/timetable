@@ -50,7 +50,7 @@ export default {
   width: 100%;
   background-color: #000;
   opacity: 0.7;
-  z-index: 400;
+  z-index: 500;
 }
 
 .container {
@@ -64,7 +64,7 @@ export default {
   background-color: var(--color-background);
   font-size: 1.3rem;
 
-  z-index: 450;
+  z-index: 550;
 }
 
 .actions {
