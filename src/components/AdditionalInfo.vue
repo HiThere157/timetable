@@ -4,7 +4,7 @@
       <tr class="headerRow">
         <th>Lesson</th>
         <th>
-          <Info title="Teacher" text="Use ',' To seperate multiple Names" />
+          <Info title="Teacher" text="Use ',' to seperate multiple Names" />
         </th>
         <th>Color</th>
         <th>Action</th>
