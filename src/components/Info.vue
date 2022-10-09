@@ -63,6 +63,7 @@ svg {
   transform: translateX(3rem);
   font-size: medium;
   z-index: 450;
+  isolation: isolate;
 
   &::before {
     content: "";
